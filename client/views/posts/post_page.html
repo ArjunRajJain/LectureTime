@@ -1,15 +1,34 @@
 <template name="postPage">
-  {{> postItem}}
-  
-  <ul class="comments">
-    {{#each comments}}
-      {{> comment}}
-    {{/each}}
-  </ul>
-  
-  {{#if currentUser}}
-    {{> commentSubmit}}
-  {{else}}
-    <p>Please log in to leave a comment.</p>
-  {{/if}}
+    <div class="tab-content">
+
+      <!-- NotePad-->
+  		<div class="tab-pane fade in active" id="doc1">.        
+  			<div class="editor-container" style="height:500px">
+        	{{> sharejsAce docid=this._id callback=config id="editor"}}
+    		</div>
+    	</div>
+
+      <!-- Blackboard-->
+  		<div class="tab-pane fade" id="whiteboard" style="height:inherit;" >
+    		<div style="overflow:scroll;height:500px;">
+				<canvas id="canvas" style="background:black;"></canvas>
+			</div>
+			<br>
+			<input class='btn btn-info btn-small' type="button" id='wipe' value='Clear Backboard'/>
+  		</div>
+
+      <!-- Video-->
+      <div class="tab-pane fade" id="videoH" style="height:inherit;" >
+        <div id="myVideo">
+        </div>
+        <br>
+        <div id='otherVideo'>
+        </div>
+      </div>
+
+      <!-- Chat-->
+  		<div style="width:200px; height: 300px;position: fixed;bottom: 10px;right: 10px;">
+      {{> chatworks}}
+    </div>
+	</div>
 </template>

@@ -6,28 +6,32 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="{{pathFor 'home'}}">Microscope</a>
+      <a class="brand" href="{{pathFor 'home'}}">Collaborate</a>
       <div class="nav-collapse collapse">
+        {{#if currentUser}}
         <ul class="nav">
-          <li class="{{activeRouteClass 'home' 'newPosts'}}">
-            <a href="{{pathFor 'newPosts'}}">New</a>
-          </li>
-          <li class="{{activeRouteClass  'bestPosts'}}">
-            <a href="{{pathFor 'bestPosts'}}">Best</a>
-          </li>
-          {{#if currentUser}}
+          
+          {{#unless properPage}}
             <li class="{{activeRouteClass 'postSubmit'}}">
-              <a href="{{pathFor 'postSubmit'}}">Submit Post</a>
+              <a href="{{pathFor 'postSubmit'}}">Create Room</a>
             </li>
-            <li class="dropdown">
-              {{> notifications}}
-            </li>
-          {{/if}}
+            {{/unless}}
         </ul>
+        {{#if properPage}}
+          <ul class="nav" id='tabsGalore'>
+  <li class="active yoyo" id='notepadli'><a id='notepadli' href="#doc1" data-toggle="tab">NotePad</a></li>
+  <li class='yoyo' id='blackboardli'><a id='blackboardli' href="#whiteboard" data-toggle="tab">BlackBoard</a></li>
+
+  <li class='yoyo' id='videoli'><a id='videoli' href="#videoH" data-toggle="tab">Video</a></li>
+</ul>
+{{/if}}
+                        {{/if}}
         <ul class="nav pull-right">
           <li>{{> loginButtons}}</li>
         </ul>
+
       </div>
+
     </div>
   </header>
 </template>

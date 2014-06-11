@@ -8,5 +8,11 @@ Template.header.helpers({
     });
     
     return active && 'active';
+  },
+  properPage : function() {
+    if(Router.current()) {
+      return Router.current().route.name == "postPage";
+    }
+    return false;
   }
 });
