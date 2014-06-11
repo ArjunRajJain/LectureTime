@@ -69,7 +69,7 @@ Template.postPage.rendered = function() {
       pad.close();
       remotePad.close();
     }
-
+    console.log('yis');
     pad = new Pad(padId);
     remotePad = new RemotePad(padId, pad);
     //remoteTabs = new RemoteTabs(padId, tabs);
