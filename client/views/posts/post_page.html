@@ -1,34 +1,29 @@
 <template name="postPage">
-    <div class="tab-content">
+    <div class="tab-content" style='height:100%;width:100%;'>
 
       <!-- NotePad-->
-  		<div class="tab-pane fade in active" id="doc1">.        
-  			<div class="editor-container" style="height:500px">
+  		<div class="tab-pane fade" id="doc1" style='height:500px;width:100%;'>.        
+  			<div class="editor-container" style="height:inherit;width:inherit;">
         	{{> sharejsAce docid=this._id callback=config id="editor"}}
     		</div>
     	</div>
 
       <!-- Blackboard-->
-  		<div class="tab-pane fade" id="whiteboard" style="height:inherit;" >
-    		<div style="overflow:scroll;height:500px;">
-				<canvas id="canvas" style="background:black;"></canvas>
-			</div>
-			<br>
-			<input class='btn btn-info btn-small' type="button" id='wipe' value='Clear Backboard'/>
+  		<div class="tab-pane fade in active" id="whiteboard" style='position:relative;' >
+          <input class='btn btn-info btn-small' style="position:fixed;top:50px;right:0px;z-index:2;" type="button" id='wipe' value='Clear Backboard'/>
+          <canvas id="canvas" style="background:black;position:fixed;"></canvas>
   		</div>
 
-      <!-- Video-->
-      <div class="tab-pane fade" id="videoH" style="height:inherit;" >
-        <div id="myVideo">
-        </div>
-        <br>
-        <div id='otherVideo'>
-        </div>
-      </div>
-
       <!-- Chat-->
-  		<div style="width:200px; height: 300px;position: fixed;bottom: 10px;right: 10px;">
+  		<div id="chatBoxYeah" style="width:200px; height: 300px;position: fixed;bottom: 10px;right: 10px;display:none;">
       {{> chatworks}}
     </div>
 	</div>
+  <div id="myOverVideo" style="position:fixed;bottom:0px;left:0px;z-index:100000">
+    <!-- <button id="resizeVideo" style="position:relative;padding-bottom:0px;">Small</button> -->
+    <div id="myVideo"></div>
+  </div>
+  <div id='otherVideo'>
+  
+  </div>
 </template>

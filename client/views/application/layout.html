@@ -1,14 +1,6 @@
 <template name="layout">
-  <div class="container">
     {{>header}}
-    {{> errors}}
-    <div id="main" class="row-fluid">
+    <div id="main" class="row-fluid" style="">
       {{> yield}}
     </div>
-  </div>
-    <script id='tmpl-nickname' type="text/html">
- <span class='nickname'>
- nickname
- </span>
-</script>
 </template>

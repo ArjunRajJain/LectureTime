@@ -9,6 +9,9 @@ Template.header.helpers({
     
     return active && 'active';
   },
+  domain: function() {
+    return window.location.href
+  },
   properPage : function() {
     if(Router.current()) {
       return Router.current().route.name == "postPage";

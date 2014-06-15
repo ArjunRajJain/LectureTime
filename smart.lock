@@ -9,7 +9,12 @@
       "sharejs": {},
       "streams": {},
       "chatworks": {},
-      "tokbox": {}
+      "tokbox": {},
+      "sendgrid": {},
+      "accounts-entry": {},
+      "jquery-ui": {},
+      "ionicons": {},
+      "fast-render": {}
     },
     "packages": {
       "iron-router": {
@@ -49,13 +54,43 @@
       },
       "tokbox": {
         "git": "https://github.com/carlodicelico/tokbox-meteor",
-        "tag": "v2.2.2",
-        "commit": "bd6ad6ed7b7cc00755aad6df13003d5912eaff6e"
+        "tag": "v2.2.3",
+        "commit": "c49be92174c03edbc1d379e8671d9903d55f75af"
+      },
+      "sendgrid": {
+        "git": "https://github.com/DavidBrear/meteor-sendgrid.git",
+        "tag": "v0.9.0",
+        "commit": "302373c32b58b67dfe67de4dcdad065a33925fc2"
+      },
+      "accounts-entry": {
+        "git": "https://github.com/Differential/accounts-entry.git",
+        "tag": "v0.7.3",
+        "commit": "7facaa045d3720eeeba3420c28e48d5709188fe3"
+      },
+      "jquery-ui": {
+        "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
+        "tag": "v1.9.2",
+        "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
+      },
+      "ionicons": {
+        "git": "https://github.com/Pagebakers/meteor-ionicons.git",
+        "tag": "v1.4.1",
+        "commit": "c3c07eba87d42ef900c9c61323ce4499bdce3204"
+      },
+      "fast-render": {
+        "git": "https://github.com/arunoda/meteor-fast-render.git",
+        "tag": "v0.2.8",
+        "commit": "149984b1aff3a5642a270aff9bd9006872c8302e"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
         "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      },
+      "accounts-t9n": {
+        "git": "https://github.com/softwarerero/meteor-accounts-t9n.git",
+        "tag": "v0.0.5",
+        "commit": "ad9539a8818049d5d9fa050d8b2a1f62706483b1"
       }
     }
   }

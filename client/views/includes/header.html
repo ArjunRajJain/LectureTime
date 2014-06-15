@@ -1,37 +1,33 @@
 <template name="header">
   <header class="navbar">
     <div class="navbar-inner">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="{{pathFor 'home'}}">Collaborate</a>
-      <div class="nav-collapse collapse">
+      <a class="brand" href="{{pathFor 'home'}}">StudyHub</a>
+      <div class="">
         {{#if currentUser}}
         <ul class="nav">
           
           {{#unless properPage}}
             <li class="{{activeRouteClass 'postSubmit'}}">
-              <a href="{{pathFor 'postSubmit'}}">Create Room</a>
+              <a href="{{pathFor 'postSubmit'}}">Create Study Group</a>
             </li>
             {{/unless}}
         </ul>
         {{#if properPage}}
           <ul class="nav" id='tabsGalore'>
-  <li class="active yoyo" id='notepadli'><a id='notepadli' href="#doc1" data-toggle="tab">NotePad</a></li>
-  <li class='yoyo' id='blackboardli'><a id='blackboardli' href="#whiteboard" data-toggle="tab">BlackBoard</a></li>
-
-  <li class='yoyo' id='videoli'><a id='videoli' href="#videoH" data-toggle="tab">Video</a></li>
-</ul>
+            <li class='yoyo active' id='blackboardli' style="font-size:25px;"><a id='blackboardli' class="ion-compose" href="#whiteboard" data-toggle="tab"></a></li>
+            <li class="yoyo" id='notepadli' style="font-size:25px;"><a id='notepadli' class="ion-android-note" href="#doc1" data-toggle="tab"></a></li>
+            
+            
+            <li style="font-size:25px;"><a class="ion-android-add-contact" href="mailto:?subject=Inviting You To A Study Group&amp;body=Hi All,%0A%0AI'm organizing a study group session using StudyHub.%0A%0APlease join {{domain}}%0A%0AThanks,%0A"></a></li>
+          </ul>
 {{/if}}
                         {{/if}}
         <ul class="nav pull-right">
-          <li>{{> loginButtons}}</li>
+          <li class="yoyo" style="font-size:25px;"><a id="videoStart" href="" class="ion-ios7-videocam"></a></li>
+          <li class="yoyo" style="font-size:25px;"><a id="chatStart" href="" class="ion-ios7-chatboxes"></a></li>
         </ul>
 
       </div>
-
     </div>
   </header>
 </template>
