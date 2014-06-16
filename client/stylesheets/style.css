@@ -43,10 +43,11 @@ body,html {
   color: #666666; 
   height: 100%;
   width: 100%;
-  ;
+  position:fixed;
 }
 
   .navbar {
+height: 5%;
 margin-bottom: 0px;
 overflow: visible;
 }
@@ -266,4 +267,125 @@ overflow: visible;
   .modal.fade.in {
     top: 20px;
   }
+}
+
+.ui-resizable {
+  position: relative;
+}
+.ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+.ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+.ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+.ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+.ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+.ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+}
+.ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+.ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+.ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
+}
+
+.assemblage-video-form {
+display: inline-block;
+background-color: white;
+border: 1px solid rgba(0,0,0,0.2);
+box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+height: 150px;
+background-color: black;
+width: 200px;
+background-image: url("https://s3.amazonaws.com/collaborationapi/assets/personavid.png");
+background-size: 150px;
+background-position: center 31px;
+background-repeat: no-repeat;
+cursor: move!important;
+}
+
+#imgAudio, #imgVideo {
+OPACITY: .4;
+display: inline-block;
+position: absolute;
+cursor: pointer;
+transition: all .3s;
+-webkit-transition: all .3s;
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-ms-backface-visibility: hidden;
+}
+
+#imgVideo {
+top: 70px;
+left: 70px;
+width: 25px;
+}
+
+#imgAudio {
+top: 70px;
+left: 120px;
+width: 40px;
+width: 13px;
+}
+
+.assemblage-video-wrapper>div {
+-webkit-box-shadow: rgba(0,0,0,0.4) 0 1px 5px;
+-moz-box-shadow: rgba(0,0,0,0.4) 0 1px 5px;
+box-shadow: rgba(0,0,0,0.4) 0 1px 5px;
+display: inline-block;
+margin-right: 15px!important;
+cursor: move;
 }

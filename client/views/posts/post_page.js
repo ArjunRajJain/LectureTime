@@ -14,20 +14,28 @@ currentActive = 'n';
 Template.postPage.created = function() {
 LineStream.emit(Session.get('padId')+':getTab');
 
-var session;
-var connectionCount = 0;
-
-var session;
-var publisher;
-
-post = Posts.findOne();
-
 $('#chatStart').on('click',function(e) {
   $('#chatBoxYeah').toggle();
 });
 
-$("#videoStart").on('click',function(e){
-  Meteor.call('getToken',post.sessionId,function(err,token) {
+ 
+ 
+}
+
+Template.postPage.events({
+  'click #imgVideo' : function(e) {
+    console.log('yis');
+    $('#assemblage-video-nostream').css('display','none');
+
+    var session;
+    var connectionCount = 0;
+
+    var session;
+    var publisher;
+
+    post = Posts.findOne();
+
+    Meteor.call('getToken',post.sessionId,function(err,token) {
 
   if (!err) {
     OT.setLogLevel(OT.DEBUG);
@@ -43,15 +51,21 @@ $("#videoStart").on('click',function(e){
             }
         });
 
-        publisher = OT.initPublisher('myVideo',{width:200, height:150});
+        publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720"});
         publisher.on({
             streamCreated: function (event) {
-
+              $('#myVideo > span').css('display','none');
+              $('#myVideo > button').css('display','none');
+              $('#myVideo > div.OT_bar.OT_edge-bar-item.OT_mode-auto').css('display','none');
             },
             streamDestroyed: function (event) {
-
+              $('#assemblage-video-nostream').css('display','block');
             }
         });
+        $('#myVideo').css('display','block');
+
+
+
         session.on("streamCreated", function(event) {
           session.subscribe(event.stream, 'otherVideo');
           session.connect(token);
@@ -63,14 +77,8 @@ $("#videoStart").on('click',function(e){
         OT.log("The client does not support WebRTC.");
     }
   }
-  $('#myOverVideo').draggable();
 });
-});
- 
- 
-}
-
-Template.postPage.events({
+  },
   'click #resizeVideo' : function(e) {
     if($('#resizeVideo').html() == "Small") {
       $('#resizeVideo').html("Medium");
@@ -91,6 +99,7 @@ Template.postPage.events({
 });
 
 Template.postPage.rendered = function() {
+  $('#videoForm').draggable();
   padId = Session.get('padId');
     Deps.autorun(function() {
     if(pad) {
