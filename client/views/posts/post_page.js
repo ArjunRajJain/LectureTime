@@ -9,7 +9,17 @@ Template.postPage.config = function() {
     return ace.getSession().setUseWrapMode(true);
   };
 };
+
 currentActive = 'n';
+var session;
+var publisher;
+var audioOnly = false;
+var vidOnly = false;
+token = '';
+fullScreen = false;
+big = false;
+left = 0;
+top1 = 0;
 
 Template.postPage.created = function() {
 LineStream.emit(Session.get('padId')+':getTab');
@@ -18,68 +28,135 @@ $('#chatStart').on('click',function(e) {
   $('#chatBoxYeah').toggle();
 });
 
+post = Posts.findOne();
+
+  Meteor.call('getToken',post.sessionId,function(err,tok) {
+    token = tok;
+    if (OT.checkSystemRequirements() == 1) {
+        // Replace sessionID with your own values:
+        session = OT.initSession('44830582', post.sessionId);
+        session.on("streamCreated", function(event) {
+          session.subscribe(event.stream, 'otherVideo');
+          session.connect(token);
+          console.log('stream recieved');
+        });
+    }
+  });
  
  
 }
 
 Template.postPage.events({
-  'click #imgVideo' : function(e) {
-    console.log('yis');
-    $('#assemblage-video-nostream').css('display','none');
-
-    var session;
-    var connectionCount = 0;
-
-    var session;
-    var publisher;
-
-    post = Posts.findOne();
-
-    Meteor.call('getToken',post.sessionId,function(err,token) {
-
-  if (!err) {
-    OT.setLogLevel(OT.DEBUG);
-    OT.on("exception", function exceptionHandler(event) {
-        console.log(event)
-    });
-    if (OT.checkSystemRequirements() == 1) {
-        // Replace sessionID with your own values:
-        session = OT.initSession('44830582', post.sessionId);
-        session.connect(token, function (error) {
-            if (publisher) {
-                session.publish(publisher);
-            }
-        });
-
-        publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720"});
-        publisher.on({
-            streamCreated: function (event) {
-              $('#myVideo > span').css('display','none');
-              $('#myVideo > button').css('display','none');
-              $('#myVideo > div.OT_bar.OT_edge-bar-item.OT_mode-auto').css('display','none');
-            },
-            streamDestroyed: function (event) {
-              $('#assemblage-video-nostream').css('display','block');
-            }
-        });
-        $('#myVideo').css('display','block');
-
-
-
-        session.on("streamCreated", function(event) {
-          session.subscribe(event.stream, 'otherVideo');
-          session.connect(token);
-          console.log('stream recieved');
-          // $('#otherVideo').css('height','600px');
-          // $('#otherVideo').css('width','800px');
-        });
-    } else {
-        OT.log("The client does not support WebRTC.");
+  'click #pubAud' : function(e) {
+    e.stopPropagation();
+    if(!audioOnly) {
+      console.log('audio Off');
+      publisher.publishAudio(true);
+      $('#imgAudio').css('opacity',1);
+      $('#pubAud').css('opacity',1);
     }
-  }
-});
+    else {
+      console.log('audio on');
+      publisher.publishAudio(false);
+      $('#imgAudio').css('opacity',0.3);
+      $('#pubAud').css('opacity',0.3);
+    }
+    audioOnly = !audioOnly;
+  },
+  'click #getBig' : function(e) {
+    if(!big) {
+      $('#myVideo').css('height',$('.tab-content').height()-10);
+      $('#myVideo').css('width',$('.tab-content').width()-10);
+      left = $('#videoForm').css('left');
+      top1 = $('#videoForm').offset().top;
+      $('#videoForm').css('left','0px');
+      $('#videoForm').css('top','0px');
+    }
+    else {
+      $('#myVideo').css('height',150);
+      $('#myVideo').css('width',200);
+      $('#videoForm').css('top',top1);
+      $('#videoForm').css('left',left);
+    }
+    big = !big;
+  },
+  'click #pubVid' : function(e) {
+    e.stopPropagation();
+    if(!vidOnly) {
+      publisher.publishVideo(true);
+      $('#imgVideo').css('opacity',1);
+      $('#pubVid').css('opacity',1);
+    }
+    else {
+      publisher.publishVideo(false);
+      $('#imgVideo').css('opacity',0.3);
+      $('#pubVid').css('opacity',0.3);
+    }
+    vidOnly = !vidOnly;
+    console.log(vidOnly);
+  },
+  'click #imgVideo' : function(e) {
+    e.preventDefault();
+    if(!publisher) {
+      $('#assemblage-video-nostream').css('display','none');
+
+      session.connect(token, function (error) {
+          if (publisher) {
+              session.publish(publisher);
+          }
+      });
+
+      publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720"});
+      publisher.on({
+          streamCreated: function (event) {
+            // $('#myVideo > span').css('display','none');
+            // $('#myVideo > button').css('display','none');
+            $('#myVideo').hide();
+            $('#myVideo').children().hide();
+            $('#myVideo > div.OT_video-container').show();
+            $('.OT_video-container').after('<div id="vidCtrls" class=""><a id="pubVid"><img src="https://s3.amazonaws.com/collaborationapi/assets/vid0.png"  id="pubVid" style="width: 15px;cursor:pointer;" alt="Toggle video" title="Toggle video" class="active"></a><a id="pubAud"><img src="https://s3.amazonaws.com/collaborationapi/assets/voice0.png" id="pubAud"  style="width: 8px;margin-left: 12px;cursor:pointer;" alt="Toggle audio" title="Toggle audio" class="active"></a><a id="getBig"><img src="https://s3.amazonaws.com/collaborationapi/assets/expand_left.png"  class="toggleScreen" style="width: 15px;z-index: 222222;cursor:pointer !important; position: absolute;top: 5px;right: 25px;" alt="Toggle fullscreen" title="Toggle fullscreen"></a></div>');
+            $('#myVideo').show();
+          },
+          streamDestroyed: function (event) {
+            $('#assemblage-video-nostream').css('display','block');
+          }
+      });
+      $('#myVideo').css('display','block');
+      audioOnly = true;
+      vidOnly = true;
+    }
+  },
+  'click #imgAudio' : function(e) {
+    e.preventDefault();
+    $('#assemblage-video-nostream').css('display','none');
+    if(!publisher) {
+      
+      session.connect(token, function (error) {
+          if (publisher) {
+              session.publish(publisher);
+          }
+      });
+
+      publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720",publishAudio:true, publishVideo:false});
+      publisher.on({
+          streamCreated: function (event) {
+            $('#myVideo').hide();
+            $('#myVideo').children().hide();
+            $('#myVideo > div.OT_video-container').show();
+            $('.OT_video-container').after('<div id="vidCtrls" class=""><a id="pubVid"><img src="https://s3.amazonaws.com/collaborationapi/assets/vid0.png"  id="pubVid" style="width: 15px;cursor:pointer;" alt="Toggle video" title="Toggle video" class="active"></a><a id="pubAud"><img src="https://s3.amazonaws.com/collaborationapi/assets/voice0.png" id="pubAud"  style="width: 8px;margin-left: 12px;cursor:pointer;" alt="Toggle audio" title="Toggle audio" class="active"></a><img src="https://s3.amazonaws.com/collaborationapi/assets/expand_left.png"  class="toggleScreen" style="width: 15px;z-index: 222222;cursor:pointer !important; position: absolute;top: 5px;right: 25px;" alt="Toggle fullscreen" title="Toggle fullscreen"></div>');
+            $('#myVideo').show();
+            // $('#imgAudio').css('opacity',0.1);
+            $('#pubVid').css('opacity',0.1);
+          },
+          streamDestroyed: function (event) {
+            $('#assemblage-video-nostream').css('display','block');
+          }
+      });
+      audioOnly = true;
+    }
   },
   'click #resizeVideo' : function(e) {
+    e.preventDefault();
     if($('#resizeVideo').html() == "Small") {
       $('#resizeVideo').html("Medium");
       $("#myVideo").css('height','300px');
@@ -95,11 +172,19 @@ Template.postPage.events({
       $("#myVideo").css('height','150px');
       $('#myVideo').css('width','200px');
     }
+  },
+  'mouseenter #myVideo' : function(e) {
+    $('#vidCtrls').css('opacity',1);
+  },
+  'mouseleave #myVideo' : function(e) {
+    $('#vidCtrls').css('opacity',0);
   }
 });
 
 Template.postPage.rendered = function() {
   $('#videoForm').draggable();
+  $('#videoForm').css('top',$('.tab-content').height() - 165 + 'px');
+  $('#videoForm').css('left','5px');
   padId = Session.get('padId');
     Deps.autorun(function() {
     if(pad) {
@@ -114,6 +199,7 @@ Template.postPage.rendered = function() {
   $('body').on('click', '#wipe', function() {
     pad.wipe(true);
   });
+
 
 
   function checkActiveB(target) {

@@ -24,7 +24,12 @@
 {{/if}}
                         {{/if}}
         <ul class="nav pull-right">
+          {{#if properPage}}
           <li class="yoyo" style="font-size:25px;"><a id="chatStart" href="" class="ion-ios7-chatboxes"></a></li>
+          {{/if}}
+          {{#unless currentUser}}
+            {{> loginButtons}}
+          {{/unless}}
         </ul>
 
       </div>
