@@ -59,13 +59,15 @@ Meteor.methods({
     Dots.update({padId:id},{$set:{erased:true}},{multi:true});
   },
   getToken : function(id) {
-    var openTokClient = new OpenTokClient('44830582', '9242e5928e440da73ef6c2874f6609c2f4a1982f');
-    var location = '127.0.0.1';
-    var options = {'p2p.preference':'enabled'};
-    var session = id
-    var role = OpenTokClient.roles.PUBLISHER;
-    var params = {connection_data:Meteor.userId()};
-    var token = openTokClient.generateToken(session, role, params);
+    var openTokClient = new OpenTokClient('25832252', 'd4e8df12cb972e95db1d082c813f3de4ff4c35d1');
+    var sessionId = id;
+    var options = {
+        role: 'publisher', //The role for the token. Each role defines a set of permissions granted to the token
+        data: "userId:" + Meteor.userId(), 
+        expireTime: Math.round(new Date().getTime() / 1000) + 86400 // (24 hours) The expiration time for the token, in seconds since the UNIX epoch. The maximum expiration time is 30 days after the creation time. The default expiration time of 24 hours after the token creation time.
+    };
+
+    var token = openTokClient.generateToken(sessionId, options);
     return token;
   },
   post: function(postAttributes) {
@@ -87,19 +89,16 @@ Meteor.methods({
         postWithSameLink._id);
     }
 
-    var openTokClient = new OpenTokClient('44830582', '9242e5928e440da73ef6c2874f6609c2f4a1982f');
-    var location = '127.0.0.1';
-    var options = {'p2p.preference':'enabled'};
-    var session = openTokClient.createSession(location, options);
-    var role = OpenTokClient.roles.PUBLISHER;
-    var params = {connection_data:"userId:42"};
-    var token = openTokClient.generateToken(session, role, params);
-    
+    var openTokClient = new OpenTokClient('25832252', 'd4e8df12cb972e95db1d082c813f3de4ff4c35d1');
+    var options = {
+      mediaMode: 'routed', //Options are 'routed' (through openTok servers) and 'relayed' (Peer to Peer)
+      location: '127.0.0.1' //An IP address that the OpenTok servers will use to situate the session in the global OpenTok network.
+    };
+    var session = openTokClient.createSession(options);
     // pick out the whitelisted keys
     var post = _.extend(_.pick(postAttributes, 'title'), {
       userId: user._id, 
       sessionId: session,
-      token: token,
       author: user.username, 
       submitted: new Date().getTime(),
       commentsCount: 0,

@@ -34,7 +34,7 @@ post = Posts.findOne();
     token = tok;
     if (OT.checkSystemRequirements() == 1) {
         // Replace sessionID with your own values:
-        session = OT.initSession('44830582', post.sessionId);
+        session = OT.initSession('25832252', post.sessionId);
         session.on("streamCreated", function(event) {
           session.subscribe(event.stream, 'otherVideo');
           session.connect(token);
@@ -80,6 +80,23 @@ Template.postPage.events({
     }
     big = !big;
   },
+  'dblclick #myVideo' : function(e) {
+    if(!big) {
+      $('#myVideo').css('height',$('.tab-content').height()-10);
+      $('#myVideo').css('width',$('.tab-content').width()-10);
+      left = $('#videoForm').css('left');
+      top1 = $('#videoForm').offset().top;
+      $('#videoForm').css('left','0px');
+      $('#videoForm').css('top','0px');
+    }
+    else {
+      $('#myVideo').css('height',150);
+      $('#myVideo').css('width',200);
+      $('#videoForm').css('top',top1);
+      $('#videoForm').css('left',left);
+    }
+    big = !big;
+  },
   'click #pubVid' : function(e) {
     e.stopPropagation();
     if(!vidOnly) {
@@ -98,7 +115,7 @@ Template.postPage.events({
   'click #imgVideo' : function(e) {
     e.preventDefault();
     if(!publisher) {
-      $('#assemblage-video-nostream').css('display','none');
+      
 
       session.connect(token, function (error) {
           if (publisher) {
@@ -116,19 +133,21 @@ Template.postPage.events({
             $('#myVideo > div.OT_video-container').show();
             $('.OT_video-container').after('<div id="vidCtrls" class=""><a id="pubVid"><img src="https://s3.amazonaws.com/collaborationapi/assets/vid0.png"  id="pubVid" style="width: 15px;cursor:pointer;" alt="Toggle video" title="Toggle video" class="active"></a><a id="pubAud"><img src="https://s3.amazonaws.com/collaborationapi/assets/voice0.png" id="pubAud"  style="width: 8px;margin-left: 12px;cursor:pointer;" alt="Toggle audio" title="Toggle audio" class="active"></a><a id="getBig"><img src="https://s3.amazonaws.com/collaborationapi/assets/expand_left.png"  class="toggleScreen" style="width: 15px;z-index: 222222;cursor:pointer !important; position: absolute;top: 5px;right: 25px;" alt="Toggle fullscreen" title="Toggle fullscreen"></a></div>');
             $('#myVideo').show();
+            $('#myVideo').css('display','block');
+            $('#assemblage-video-nostream').css('display','none');
           },
           streamDestroyed: function (event) {
             $('#assemblage-video-nostream').css('display','block');
           }
       });
-      $('#myVideo').css('display','block');
+      //$('#myVideo').css('display','block');
       audioOnly = true;
       vidOnly = true;
     }
   },
   'click #imgAudio' : function(e) {
     e.preventDefault();
-    $('#assemblage-video-nostream').css('display','none');
+    
     if(!publisher) {
       
       session.connect(token, function (error) {
@@ -145,32 +164,16 @@ Template.postPage.events({
             $('#myVideo > div.OT_video-container').show();
             $('.OT_video-container').after('<div id="vidCtrls" class=""><a id="pubVid"><img src="https://s3.amazonaws.com/collaborationapi/assets/vid0.png"  id="pubVid" style="width: 15px;cursor:pointer;" alt="Toggle video" title="Toggle video" class="active"></a><a id="pubAud"><img src="https://s3.amazonaws.com/collaborationapi/assets/voice0.png" id="pubAud"  style="width: 8px;margin-left: 12px;cursor:pointer;" alt="Toggle audio" title="Toggle audio" class="active"></a><img src="https://s3.amazonaws.com/collaborationapi/assets/expand_left.png"  class="toggleScreen" style="width: 15px;z-index: 222222;cursor:pointer !important; position: absolute;top: 5px;right: 25px;" alt="Toggle fullscreen" title="Toggle fullscreen"></div>');
             $('#myVideo').show();
+            $('#myVideo').css('display','block');
             // $('#imgAudio').css('opacity',0.1);
             $('#pubVid').css('opacity',0.1);
+            $('#assemblage-video-nostream').css('display','none');
           },
           streamDestroyed: function (event) {
             $('#assemblage-video-nostream').css('display','block');
           }
       });
       audioOnly = true;
-    }
-  },
-  'click #resizeVideo' : function(e) {
-    e.preventDefault();
-    if($('#resizeVideo').html() == "Small") {
-      $('#resizeVideo').html("Medium");
-      $("#myVideo").css('height','300px');
-      $('#myVideo').css('width','400px');
-    }
-    else if($('#resizeVideo').html() == "Medium"){
-      $('#resizeVideo').html("Large");
-      $("#myVideo").css('height','600px');
-      $('#myVideo').css('width','800px');
-    }
-    else {
-      $('#resizeVideo').html("Small");
-      $("#myVideo").css('height','150px');
-      $('#myVideo').css('width','200px');
     }
   },
   'mouseenter #myVideo' : function(e) {

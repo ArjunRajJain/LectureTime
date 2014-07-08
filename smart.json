@@ -7,11 +7,11 @@
     "sharejs": {},
     "streams": {},
     "chatworks": {},
-    "tokbox": {},
     "sendgrid": {},
     "accounts-entry": {},
     "jquery-ui": {},
     "ionicons": {},
-    "fast-render": {}
+    "fast-render": {},
+    "tokbox": {}
   }
 }
