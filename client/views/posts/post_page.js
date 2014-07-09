@@ -27,21 +27,6 @@ LineStream.emit(Session.get('padId')+':getTab');
 $('#chatStart').on('click',function(e) {
   $('#chatBoxYeah').toggle();
 });
-
-post = Posts.findOne();
-
-  Meteor.call('getToken',post.sessionId,function(err,tok) {
-    token = tok;
-    if (OT.checkSystemRequirements() == 1) {
-        // Replace sessionID with your own values:
-        session = OT.initSession('25832252', post.sessionId);
-        session.on("streamCreated", function(event) {
-          session.subscribe(event.stream, 'otherVideo');
-          session.connect(token);
-          console.log('stream recieved');
-        });
-    }
-  });
  
  
 }
@@ -63,40 +48,40 @@ Template.postPage.events({
     }
     audioOnly = !audioOnly;
   },
-  'click #getBig' : function(e) {
-    if(!big) {
-      $('#myVideo').css('height',$('.tab-content').height()-10);
-      $('#myVideo').css('width',$('.tab-content').width()-10);
-      left = $('#videoForm').css('left');
-      top1 = $('#videoForm').offset().top;
-      $('#videoForm').css('left','0px');
-      $('#videoForm').css('top','0px');
-    }
-    else {
-      $('#myVideo').css('height',150);
-      $('#myVideo').css('width',200);
-      $('#videoForm').css('top',top1);
-      $('#videoForm').css('left',left);
-    }
-    big = !big;
-  },
-  'dblclick #myVideo' : function(e) {
-    if(!big) {
-      $('#myVideo').css('height',$('.tab-content').height()-10);
-      $('#myVideo').css('width',$('.tab-content').width()-10);
-      left = $('#videoForm').css('left');
-      top1 = $('#videoForm').offset().top;
-      $('#videoForm').css('left','0px');
-      $('#videoForm').css('top','0px');
-    }
-    else {
-      $('#myVideo').css('height',150);
-      $('#myVideo').css('width',200);
-      $('#videoForm').css('top',top1);
-      $('#videoForm').css('left',left);
-    }
-    big = !big;
-  },
+  // 'click #getBig' : function(e) {
+  //   if(!big) {
+  //     $('#myVideo').css('height',$('.tab-content').height()-10);
+  //     $('#myVideo').css('width',$('.tab-content').width()-10);
+  //     left = $('#videoForm').css('left');
+  //     top1 = $('#videoForm').offset().top;
+  //     $('#videoForm').css('left','0px');
+  //     $('#videoForm').css('top','0px');
+  //   }
+  //   else {
+  //     $('#myVideo').css('height',150);
+  //     $('#myVideo').css('width',200);
+  //     $('#videoForm').css('top',top1);
+  //     $('#videoForm').css('left',left);
+  //   }
+  //   big = !big;
+  // },
+  // 'dblclick #myVideo' : function(e) {
+  //   if(!big) {
+  //     $('#myVideo').css('height',$('.tab-content').height()-10);
+  //     $('#myVideo').css('width',$('.tab-content').width()-10);
+  //     left = $('#videoForm').css('left');
+  //     top1 = $('#videoForm').offset().top;
+  //     $('#videoForm').css('left','0px');
+  //     $('#videoForm').css('top','0px');
+  //   }
+  //   else {
+  //     $('#myVideo').css('height',150);
+  //     $('#myVideo').css('width',200);
+  //     $('#videoForm').css('top',top1);
+  //     $('#videoForm').css('left',left);
+  //   }
+  //   big = !big;
+  // },
   'click #pubVid' : function(e) {
     e.stopPropagation();
     if(!vidOnly) {
@@ -116,12 +101,6 @@ Template.postPage.events({
     e.preventDefault();
     if(!publisher) {
       
-
-      session.connect(token, function (error) {
-          if (publisher) {
-              session.publish(publisher);
-          }
-      });
 
       publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720"});
       publisher.on({
@@ -143,18 +122,13 @@ Template.postPage.events({
       //$('#myVideo').css('display','block');
       audioOnly = true;
       vidOnly = true;
+      session.publish(publisher);
     }
   },
   'click #imgAudio' : function(e) {
     e.preventDefault();
     
     if(!publisher) {
-      
-      session.connect(token, function (error) {
-          if (publisher) {
-              session.publish(publisher);
-          }
-      });
 
       publisher = OT.initPublisher('myVideo',{width:200, height:150,resolution: "1280x720",publishAudio:true, publishVideo:false});
       publisher.on({
@@ -174,6 +148,7 @@ Template.postPage.events({
           }
       });
       audioOnly = true;
+      session.publish(publisher);
     }
   },
   'mouseenter #myVideo' : function(e) {
@@ -186,8 +161,8 @@ Template.postPage.events({
 
 Template.postPage.rendered = function() {
   $('#videoForm').draggable();
-  $('#videoForm').css('top',$('.tab-content').height() - 165 + 'px');
-  $('#videoForm').css('left','5px');
+  // $('#videoForm').css('top',$('.tab-content').height() - 165 + 'px');
+  // $('#videoForm').css('left','5px');
   padId = Session.get('padId');
     Deps.autorun(function() {
     if(pad) {
@@ -202,6 +177,27 @@ Template.postPage.rendered = function() {
   $('body').on('click', '#wipe', function() {
     pad.wipe(true);
   });
+
+
+  post = Posts.findOne();
+
+  Meteor.call('getToken',post.sessionId,function(err,tok) {
+    token = tok;
+    if (OT.checkSystemRequirements() == 1) {
+        // Replace sessionID with your own values:
+        session = OT.initSession('25832252', post.sessionId);
+        session.connect(token);
+        session.on("streamCreated", function(event) {
+          console.log('hello');
+          session.subscribe(event.stream, 'otherVideo');
+          console.log('stream recieved');
+        });
+    }
+  });
+
+  if(session) {
+
+  }
 
 
 

@@ -2,6 +2,9 @@
   <header class="navbar">
     <div class="navbar-inner">
       <a class="brand" href="{{pathFor 'home'}}">StudyHub</a>
+                {{#unless currentUser}}
+            {{> loginButtons align="left"}}
+          {{/unless}}
       <div class="">
         {{#if currentUser}}
         <ul class="nav">
@@ -27,9 +30,6 @@
           {{#if properPage}}
           <li class="yoyo" style="font-size:25px;"><a id="chatStart" href="" class="ion-ios7-chatboxes"></a></li>
           {{/if}}
-          {{#unless currentUser}}
-            {{> loginButtons}}
-          {{/unless}}
         </ul>
 
       </div>
